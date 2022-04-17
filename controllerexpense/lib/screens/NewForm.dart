@@ -1,9 +1,7 @@
-// ignore_for_file: unused_local_variable
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'Signup.dart';
-import 'home.dart';
+import 'package:controllerexpense/screens/Signup.dart';
+import 'package:controllerexpense/screens/place_list.dart';
 
 class NewForm extends StatefulWidget {
   const NewForm({Key? key}) : super(key: key);
@@ -35,7 +33,7 @@ class _NewFormState extends State<NewForm> {
               },
             ),
             TextFormField(
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 hintText: 'Enter your password',
                 labelText: 'password',
               ),
@@ -44,14 +42,14 @@ class _NewFormState extends State<NewForm> {
               },
             ),
             Center(
-              child: RaisedButton(
+              child: ElevatedButton(
                 child: Text('login'),
                 onPressed: ()async {
                     try {
                       await auth.signInWithEmailAndPassword(
                           email: email, password: password);
                       await Navigator.of(context).push(
-                         MaterialPageRoute(builder: (context) => Home()));
+                         MaterialPageRoute(builder: (context) => PlacesList()));
                     } on FirebaseAuthException catch (e) {
                       showDialog(
                           context: context,
@@ -71,10 +69,10 @@ class _NewFormState extends State<NewForm> {
             ),
             Center(
               child:
-                  FlatButton(child: Text('Forgot Password'), onPressed: () {}),
+                 TextButton(child: Text('Forgot Password'), onPressed: () {}),
             ),
             Center(
-                child: FlatButton(
+                child: TextButton(
               child: Text('Dont have an account',
                   style: TextStyle(color: Colors.blue[400], fontSize: 16)),
               onPressed: () {

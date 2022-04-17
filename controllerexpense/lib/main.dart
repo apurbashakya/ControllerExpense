@@ -1,6 +1,10 @@
+// @dart=2.9
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'NewForm.dart';
+import 'package:controllerexpense/providers/placesDb.dart';
+import 'package:provider/provider.dart';
+import 'package:controllerexpense/screens/place_add.dart';
+import 'package:controllerexpense/screens/place_list.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,14 +15,17 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Controller Expense',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        primaryColorDark: Colors.lightBlue,
-        backgroundColor: Colors.blueGrey,
+    return ChangeNotifierProvider.value(
+      value: PlacesDb(),
+      child: MaterialApp(
+        title: 'Systematic Ticketing Life',
+        theme: ThemeData(
+          primarySwatch: Colors.indigo,
+          accentColor: Colors.amber,
+          primaryColor: Colors.greenAccent,
+         ),
+        home: _MyHomePageState(),
       ),
-      home: _MyHomePageState(),
     );
   }
 }
@@ -29,16 +36,16 @@ class _MyHomePageState extends StatelessWidget {
     return Scaffold(
         backgroundColor: Theme.of(context).primaryColorDark,
         appBar: AppBar(
-          title: Text('Controller Expense'),
+          title: Text('Systematic Ticketing Life'),
           backgroundColor: Theme.of(context).backgroundColor,
         ),
         body: Center(
           child: ElevatedButton(
-            child: Text('LESSS GO'),
+            child: Text('SETUP'),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => NewForm()),
+                MaterialPageRoute(builder: (context) =>AddPlace()),
               );
             },
           ),

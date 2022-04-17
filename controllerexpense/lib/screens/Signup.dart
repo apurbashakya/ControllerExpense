@@ -17,7 +17,6 @@ class _SignupState extends State<Signup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // ignore: unnecessary_new
       body: new Form(
         key: _formKey,
         child: Column(
@@ -42,7 +41,7 @@ class _SignupState extends State<Signup> {
               ),
             ),
             Center(
-              child: RaisedButton(
+              child: ElevatedButton(
                 child: Text('submit'),
                 onPressed: () async {
                   UserCredential authResult;
