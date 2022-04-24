@@ -5,6 +5,7 @@ import 'package:controllerexpense/providers/placesDb.dart';
 import 'package:provider/provider.dart';
 import 'package:controllerexpense/screens/place_add.dart';
 import 'package:controllerexpense/screens/place_list.dart';
+import './screens/NewForm.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.indigo,
           accentColor: Colors.amber,
           primaryColor: Colors.greenAccent,
-         ),
+        ),
         home: _MyHomePageState(),
       ),
     );
@@ -45,7 +46,7 @@ class _MyHomePageState extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) =>AddPlace()),
+                MaterialPageRoute(builder: (context) => NewForm()),
               );
             },
           ),

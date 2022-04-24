@@ -3,6 +3,9 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+//import 'package:path/path.dart';
+// ignore: import_of_legacy_library_into_null_safe
+//import 'package:path_provider/path_provider.dart' as sys;
 
 class ImageInput extends StatefulWidget {
   const ImageInput({Key? key}) : super(key: key);
@@ -13,7 +16,9 @@ class ImageInput extends StatefulWidget {
 
 //we will be working with real image files not network hechce real time data
 class _ImageInputState extends State<ImageInput> {
-  File? storedImage; //this will hold our file
+  File? storedImage;
+  
+  //get path => null; //this will hold our file
   //we dont instatntiate we are just gonna use some static methods it has
   Future<void> clickPicture() async {
     //pickimage is future so we need async
@@ -21,6 +26,13 @@ class _ImageInputState extends State<ImageInput> {
       source: ImageSource.camera,
       maxWidth: 600,
     );
+    setState(() {
+      storedImage = imageFile;
+    });
+    /*final appDirectory = await sys.getApplicationDocumentsDirectory();//directory with appdata so we can also get the path where we can store
+    final fileName = path.basename(imageFile.path); //where ur image is currently stored, basename is a fancy name for file name not even extension will be there
+    final savedimage=await imageFile.copy('${appDirectory.path}/$fileName');//copies filename in the appDirectory.pa
+*/
   }
 
   @override
@@ -47,7 +59,8 @@ class _ImageInputState extends State<ImageInput> {
         SizedBox(
           child: Expanded(
               child: TextButton.icon(
-                  onPressed: clickPicture,//no parenthisis beacuse we dont want to execute it on code parsing rather when it is clicked
+                  onPressed:
+                      clickPicture, //no parenthisis beacuse we dont want to execute it on code parsing rather when it is clicked
                   icon: Icon(Icons.camera_enhance),
                   label: Text(
                     'Click Picture',
