@@ -1,5 +1,10 @@
+
+import 'dart:io';
 import 'package:flutter/material.dart';
 import '../widgets/image_input.dart';
+import 'package:provider/provider.dart';
+import '../providers/placesDb.dart';
+
 class AddPlace extends StatefulWidget {
   const AddPlace({Key? key})
       : super(key: key); //beacuse we will add this later to our routes table
@@ -8,7 +13,21 @@ class AddPlace extends StatefulWidget {
 }
 
 class _AddPlaceState extends State<AddPlace> {
-  final _titleController= TextEditingController();
+  final _titleController = TextEditingController();
+  File? _pickedImage;
+  void _selectImage(File pickedImage) {
+    _pickedImage = pickedImage;
+  }
+
+  void _savePlace() {
+    if (_titleController.text.isEmpty || _pickedImage == null) {
+      return;
+    }
+    Provider.of<PlacesDb>(context, listen: false)
+        .addPlace(_titleController.text, _pickedImage!);
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,17 +46,17 @@ class _AddPlaceState extends State<AddPlace> {
                     decoration: InputDecoration(labelText: 'Title'),
                     controller: _titleController,
                   ),
-                  SizedBox(height: 10,),//to store our preview and take picture
-                  ImageInput(),  
-                  ],
+                  SizedBox(
+                    height: 10,
+                  ), //to store our preview and take picture
+                  ImageInput(_selectImage),
+                ],
               ),
             ),
           ),
           ElevatedButton.icon(
-            onPressed: () {
-              MaterialPageRoute(builder: (context) => AddPlace());
-            },
-            icon: Icon(Icons.add),
+            onPressed: _savePlace, //() {MaterialPageRoute(builder: (context) => AddPlace());},
+            icon: const Icon(Icons.add),
             label: Text('Add Place'),
             // ignore: deprecated_member_use
           )
