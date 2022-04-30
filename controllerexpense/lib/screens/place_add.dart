@@ -6,9 +6,10 @@ import 'package:provider/provider.dart';
 import '../providers/placesDb.dart';
 import '../widgets/review_input.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
-
+import 'package:getwidget/getwidget.dart';
 
 var rating = 3.0;
+
 class AddPlace extends StatefulWidget {
   const AddPlace({Key? key})
       : super(key: key); //beacuse we will add this later to our routes table
@@ -25,8 +26,7 @@ class _AddPlaceState extends State<AddPlace> {
   }
 
   void _savePlace() {
-    if (_titleController.text.isEmpty ||
-        _pickedImage == null) {
+    if (_titleController.text.isEmpty || _pickedImage == null) {
       return;
     }
     Provider.of<PlacesDb>(context, listen: false)
@@ -38,7 +38,7 @@ class _AddPlaceState extends State<AddPlace> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add a new hairSaloon'),
+        title: const Text('Add a new hairSaloon'),
       ),
       body: Column(
         // we romeved main axis alinment because we useed exapnded which will enable first child to take all height it can get, but will leaved"Add place button the required space it needs" , mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -48,43 +48,45 @@ class _AddPlaceState extends State<AddPlace> {
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  TextField(
-                    decoration: InputDecoration(labelText: 'Title'),
-                    controller: _titleController,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ), //to store our preview and take picture
-                  ImageInput(_selectImage),
                   Container(
-                    padding: EdgeInsetsDirectional.all(10),
-                    height: 220,
-                    width: double.maxFinite,
-                    child: Card(
-                      child: Column(
-                        // ignore: prefer_const_literals_to_create_immutables
-                        children: [
-                           TextField(
-                              textAlignVertical: TextAlignVertical.top,
-                              controller: _reviewController,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                contentPadding:
-                                    EdgeInsets.symmetric(vertical: 40),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.blueAccent,
-                                  ),
-                                ),
-                                labelText: "Add the review",
+                    child: Column(
+                      // ignore: prefer_const_literals_to_create_immutable
+                      children: [
+                        TextField(
+                          decoration: const InputDecoration(labelText: 'Title'),
+                          controller: _titleController,
+                        ), //to store our preview and take picture
+                        ImageInput(_selectImage),
+                        TextField(
+                          textAlignVertical: TextAlignVertical.top,
+                          controller: _reviewController,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(vertical: 40),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.blueAccent,
                               ),
+                            ),
+                            labelText: "Add the review",
+                          ),
+                        ),
+                       GFCard(
+                          content: const Text(
+                              "Some quick example text to build on the card"),
+                          buttonBar: GFButtonBar(
+                            children: <Widget>[
+                              GFButton(
+                                onPressed: () {},
+                                icon: Icon(Icons.location_on_sharp),
+                                text: 'Add location',
                               ),
-                        ],
-                      ),
-                      elevation: 10,
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  
                   SmoothStarRating(
                     rating: rating,
                     isReadOnly: false,
@@ -99,24 +101,10 @@ class _AddPlaceState extends State<AddPlace> {
                       // print("rating value dd -> ${value.truncate()}");
                     },
                   ),
-                  ElevatedButton.icon(
-                    onPressed:
-                        () {}, //() {MaterialPageRoute(builder: (context) => AddPlace());},
-                    icon: Icon(Icons.abc_sharp),
-                    label: Text('Add Review'),
-                    // ignore: deprecated_member_use
-                  )
                 ],
               ),
             ),
           ),
-          ElevatedButton.icon(
-            onPressed:
-                _savePlace, //() {MaterialPageRoute(builder: (context) => AddPlace());},
-            icon: const Icon(Icons.add),
-            label: Text('Add Place'),
-            // ignore: deprecated_member_use
-          )
         ],
       ),
     );
