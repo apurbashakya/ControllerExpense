@@ -18,6 +18,7 @@ class AddPlace extends StatefulWidget {
 
 class _AddPlaceState extends State<AddPlace> {
   final _titleController = TextEditingController();
+  final _reviewController = TextEditingController();
   File? _pickedImage;
   void _selectImage(File pickedImage) {
     _pickedImage = pickedImage;
@@ -29,7 +30,7 @@ class _AddPlaceState extends State<AddPlace> {
       return;
     }
     Provider.of<PlacesDb>(context, listen: false)
-        .addPlace(_titleController.text, _pickedImage!);
+        .addPlace(_titleController.text, _reviewController.text, _pickedImage!);
     Navigator.of(context).pop();
   }
 
@@ -63,8 +64,9 @@ class _AddPlaceState extends State<AddPlace> {
                       child: Column(
                         // ignore: prefer_const_literals_to_create_immutables
                         children: [
-                          const TextField(
+                           TextField(
                               textAlignVertical: TextAlignVertical.top,
+                              controller: _reviewController,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 contentPadding:
@@ -75,7 +77,8 @@ class _AddPlaceState extends State<AddPlace> {
                                   ),
                                 ),
                                 labelText: "Add the review",
-                              )),
+                              ),
+                              ),
                         ],
                       ),
                       elevation: 10,

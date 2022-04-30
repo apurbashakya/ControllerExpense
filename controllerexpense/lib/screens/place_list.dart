@@ -45,6 +45,7 @@ class PlacesList extends StatelessWidget {
                                 leading: CircleAvatar(
                                     backgroundImage: placesDb.items[i].image),
                                 title: Text(placesDb.items[i].title),
+                                subtitle: Text(placesDb.items[i].review),
                               ),
                             ),
                     ),

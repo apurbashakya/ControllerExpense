@@ -14,10 +14,11 @@ class PlacesDb with ChangeNotifier {
     return [..._items];
   }
 
-  void addPlace(String pickedtitle, File pickedimage) {
+  void addPlace(String pickedtitle,String reviewpage, File pickedimage) {
     final newPlace = Place(
         id: DateTime.now().toString(),
         image: FileImage(pickedimage),
+        review: reviewpage,
         title: pickedtitle,
         location: location2
     );
@@ -37,6 +38,7 @@ class PlacesDb with ChangeNotifier {
           (item) => Place(
               id: item['id'],
               title: item['title'],
+              review: item['review'],
               image: FileImage(item['image']),
               location: location2
               ),
