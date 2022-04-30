@@ -37,7 +37,7 @@ class _MyHomePageState extends StatelessWidget {
     return Scaffold(
         backgroundColor: Theme.of(context).primaryColorDark,
         appBar: AppBar(
-          title: Text('Systematic Ticketing Life'),
+          title: Text('Review Log'),
           backgroundColor: Theme.of(context).backgroundColor,
         ),
         body: Center(
@@ -46,7 +46,7 @@ class _MyHomePageState extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => NewForm()),
+                MaterialPageRoute(builder: (context) => PlacesList()),
               );
             },
           ),

@@ -1,4 +1,3 @@
-
 import 'package:controllerexpense/providers/placesDb.dart';
 import 'package:flutter/material.dart';
 import 'package:controllerexpense/screens/place_add.dart';
@@ -26,19 +25,29 @@ class PlacesList extends StatelessWidget {
                 icon: Icon(Icons.add))
           ],
         ),
-        body: Consumer<PlacesDb>(
-          //child:Center( 
-            child: Text('add some'),
-          //),
-          builder: (ctx, placesDb, ch) =>
-              placesDb.items.isEmpty ? ch! : ListView.builder(
-                itemCount: placesDb.items.length,
-                itemBuilder: (ctx, i) => ListTile(
-                  leading:  CircleAvatar(backgroundImage:placesDb.items[i].image ),
-                  title: Text(placesDb.items[i].title),
-                ),
-                
-              ),
+        body: FutureBuilder(
+          future:
+              Provider.of<PlacesDb>(context, listen: false).fetchAndSetPlaces(),
+          builder: (ctx, snapshot) =>
+              snapshot.connectionState == ConnectionState.waiting
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Consumer<PlacesDb>(
+                      //child:Center(
+                      child: Text('add some'),
+                      //),
+                      builder: (ctx, placesDb, ch) => placesDb.items.isEmpty
+                          ? ch!
+                          : ListView.builder(
+                              itemCount: placesDb.items.length,
+                              itemBuilder: (ctx, i) => ListTile(
+                                leading: CircleAvatar(
+                                    backgroundImage: placesDb.items[i].image),
+                                title: Text(placesDb.items[i].title),
+                              ),
+                            ),
+                    ),
         ));
   }
 }

@@ -1,9 +1,10 @@
-
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import '../widgets/image_input.dart';
 import 'package:provider/provider.dart';
 import '../providers/placesDb.dart';
+import '../widgets/review_input.dart';
 
 class AddPlace extends StatefulWidget {
   const AddPlace({Key? key})
@@ -14,17 +15,18 @@ class AddPlace extends StatefulWidget {
 
 class _AddPlaceState extends State<AddPlace> {
   final _titleController = TextEditingController();
+  final _reviewController = TextEditingController();
   File? _pickedImage;
   void _selectImage(File pickedImage) {
     _pickedImage = pickedImage;
   }
 
   void _savePlace() {
-    if (_titleController.text.isEmpty || _pickedImage == null) {
+    if (_titleController.text.isEmpty ||_reviewController.text.isEmpty || _pickedImage == null) {
       return;
     }
     Provider.of<PlacesDb>(context, listen: false)
-        .addPlace(_titleController.text, _pickedImage!);
+        .addPlace(_titleController.text,_reviewController.text, _pickedImage!);
     Navigator.of(context).pop();
   }
 
@@ -46,16 +48,52 @@ class _AddPlaceState extends State<AddPlace> {
                     decoration: InputDecoration(labelText: 'Title'),
                     controller: _titleController,
                   ),
+                  TextField(
+                    decoration: InputDecoration(labelText: 'Review'),
+                  ),
                   SizedBox(
                     height: 10,
                   ), //to store our preview and take picture
                   ImageInput(_selectImage),
+                  Container(
+                    padding: EdgeInsetsDirectional.all(10),
+                    height: 220,
+                    width: double.maxFinite,
+                    child: Card(
+                      child: Column(
+                        // ignore: prefer_const_literals_to_create_immutables
+                        children: [
+                          const TextField(
+                            textAlignVertical: TextAlignVertical.top,
+                            decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(vertical: 40),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.blueAccent,
+                              ),
+                            ),
+                            labelText: "Add the review",
+                          )),
+                        ],
+                      ),
+                      elevation: 10,
+                    ),
+                  ),
+                  ElevatedButton.icon(
+                    onPressed:
+                        () {}, //() {MaterialPageRoute(builder: (context) => AddPlace());},
+                    icon: Icon(Icons.abc_sharp),
+                    label: Text('Add Review'),
+                    // ignore: deprecated_member_use
+                  )
                 ],
               ),
             ),
           ),
           ElevatedButton.icon(
-            onPressed: _savePlace, //() {MaterialPageRoute(builder: (context) => AddPlace());},
+            onPressed:
+                _savePlace, //() {MaterialPageRoute(builder: (context) => AddPlace());},
             icon: const Icon(Icons.add),
             label: Text('Add Place'),
             // ignore: deprecated_member_use
