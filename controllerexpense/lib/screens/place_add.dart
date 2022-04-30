@@ -5,7 +5,10 @@ import '../widgets/image_input.dart';
 import 'package:provider/provider.dart';
 import '../providers/placesDb.dart';
 import '../widgets/review_input.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 
+
+var rating = 3.0;
 class AddPlace extends StatefulWidget {
   const AddPlace({Key? key})
       : super(key: key); //beacuse we will add this later to our routes table
@@ -22,11 +25,13 @@ class _AddPlaceState extends State<AddPlace> {
   }
 
   void _savePlace() {
-    if (_titleController.text.isEmpty ||_reviewController.text.isEmpty || _pickedImage == null) {
+    if (_titleController.text.isEmpty ||
+        _reviewController.text.isEmpty ||
+        _pickedImage == null) {
       return;
     }
     Provider.of<PlacesDb>(context, listen: false)
-        .addPlace(_titleController.text,_reviewController.text, _pickedImage!);
+        .addPlace(_titleController.text, _reviewController.text, _pickedImage!);
     Navigator.of(context).pop();
   }
 
@@ -48,9 +53,6 @@ class _AddPlaceState extends State<AddPlace> {
                     decoration: InputDecoration(labelText: 'Title'),
                     controller: _titleController,
                   ),
-                  TextField(
-                    decoration: InputDecoration(labelText: 'Review'),
-                  ),
                   SizedBox(
                     height: 10,
                   ), //to store our preview and take picture
@@ -64,21 +66,37 @@ class _AddPlaceState extends State<AddPlace> {
                         // ignore: prefer_const_literals_to_create_immutables
                         children: [
                           const TextField(
-                            textAlignVertical: TextAlignVertical.top,
-                            decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.symmetric(vertical: 40),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.blueAccent,
-                              ),
-                            ),
-                            labelText: "Add the review",
-                          )),
+                              textAlignVertical: TextAlignVertical.top,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                contentPadding:
+                                    EdgeInsets.symmetric(vertical: 40),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.blueAccent,
+                                  ),
+                                ),
+                                labelText: "Add the review",
+                              )),
                         ],
                       ),
                       elevation: 10,
                     ),
+                  ),
+                  
+                  SmoothStarRating(
+                    rating: rating,
+                    isReadOnly: false,
+                    size: 40,
+                    filledIconData: Icons.star,
+                    halfFilledIconData: Icons.star_half,
+                    defaultIconData: Icons.star_border,
+                    starCount: 5,
+                    allowHalfRating: true,
+                    spacing: 1.0,
+                    onRated: (value) {
+                      // print("rating value dd -> ${value.truncate()}");
+                    },
                   ),
                   ElevatedButton.icon(
                     onPressed:
