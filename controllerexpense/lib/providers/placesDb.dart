@@ -14,7 +14,7 @@ class PlacesDb with ChangeNotifier {
     return [..._items];
   }
 
-  void addPlace(String pickedtitle, String pickedreview, File pickedimage) {
+  void addPlace(String pickedtitle, File pickedimage) {
     final newPlace = Place(
         id: DateTime.now().toString(),
         image: FileImage(pickedimage),

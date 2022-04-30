@@ -18,7 +18,6 @@ class AddPlace extends StatefulWidget {
 
 class _AddPlaceState extends State<AddPlace> {
   final _titleController = TextEditingController();
-  final _reviewController = TextEditingController();
   File? _pickedImage;
   void _selectImage(File pickedImage) {
     _pickedImage = pickedImage;
@@ -26,12 +25,11 @@ class _AddPlaceState extends State<AddPlace> {
 
   void _savePlace() {
     if (_titleController.text.isEmpty ||
-        _reviewController.text.isEmpty ||
         _pickedImage == null) {
       return;
     }
     Provider.of<PlacesDb>(context, listen: false)
-        .addPlace(_titleController.text, _reviewController.text, _pickedImage!);
+        .addPlace(_titleController.text, _pickedImage!);
     Navigator.of(context).pop();
   }
 
