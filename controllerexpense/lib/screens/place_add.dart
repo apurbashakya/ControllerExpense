@@ -1,12 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
+import 'package:geolocator/geolocator.dart';
 import '../widgets/image_input.dart';
 import 'package:provider/provider.dart';
 import '../providers/placesDb.dart';
 import '../widgets/review_input.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:geocoding/geocoding.dart';
 
 var rating = 3.0;
 
@@ -34,6 +35,8 @@ class _AddPlaceState extends State<AddPlace> {
     Navigator.of(context).pop();
   }
 
+  Position? _currentPosition;
+  String? _currentAddress;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,15 +74,20 @@ class _AddPlaceState extends State<AddPlace> {
                             labelText: "Add the review",
                           ),
                         ),
-                       GFCard(
-                          content: const Text(
-                              "Some quick example text to build on the card"),
+                        GFCard(
+                          content: const Text("Location deatails"),
                           buttonBar: GFButtonBar(
                             children: <Widget>[
+                              if (_currentPosition != null)
+                                Text(
+                                    "LAT: ${_currentPosition?.latitude}, LNG: ${_currentPosition?.longitude}"),
+                              Text(_currentAddress.toString()),
                               GFButton(
-                                onPressed: () {},
-                                icon: Icon(Icons.location_on_sharp),
-                                text: 'Add location',
+                                child: Text("Get location"),
+                                icon: Icon(Icons.location_on),
+                                onPressed: () {
+                                  _getCurrentLocation();
+                                },
                               ),
                             ],
                           ),
@@ -108,5 +116,35 @@ class _AddPlaceState extends State<AddPlace> {
         ],
       ),
     );
+  }
+
+  _getCurrentLocation() {
+    Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.best,
+            forceAndroidLocationManager: true)
+        .then((Position position) {
+      setState(() {
+        _currentPosition = position;
+        _getAddressFromLatLng();
+      });
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
+  _getAddressFromLatLng() async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+          _currentPosition!.latitude, _currentPosition!.longitude);
+
+      Placemark place = placemarks[0];
+
+      setState(() {
+        _currentAddress =
+            "${place.locality}, ${place.postalCode}, ${place.country}";
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 }
